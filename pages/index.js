@@ -9,6 +9,10 @@ const dm = DM_Sans({weight:['400','700'], subsets: ['latin'] })
 
 export default function Home({chartData}) {
   // const asd = getChartData()
+  let maxValue = 0;
+  chartData.map(item =>{
+    if(item.amount > maxValue) maxValue=item.amount
+  })
   return (
     <>
       <Head>
@@ -19,41 +23,42 @@ export default function Home({chartData}) {
       </Head>
       <main className={dm.className}>
         <Center bg="brand.orange" w='100vw' h='100vh'>
-          <Box width='40vw'>
+          <Box width='50vw' maxWidth='400px' minW='350px'>
             <Flex bg="brand.softRed" color="white" px='30px' py='20px' borderRadius='15px'>
               <Box >
-                <Text fontSize='12px'>My Balance</Text>
-                <Text fontSize='18px'>$921.48</Text>
+                <Text fontSize='18px' color="white">My Balance</Text>
+                <Text fontSize='35px'>$921.48</Text>
               </Box>
               <Spacer />
               <Center>
                 <Image src="/images/logo.svg" alt='logo' />
               </Center>
             </Flex>
-            <Box bg="white" borderRadius='15px' p='20px 30px' mt="20px">
-              <Text fontSize='18px' color='brand.darkBrown'>Spending - Last 7 days</Text>
-              <Flex justifyContent='space-between' fontSize='12px' color='brand.mediumBrown'>
-                <Text>mon</Text>
-                <Text>tue</Text>
-                <Text>wed</Text>
-                <Text>thu</Text>
-                <Text>fri</Text>
-                <Text>sat</Text>
-                <Text>sun</Text>
-              </Flex>
+            <Box bg="white" borderRadius='15px' p='20px 30px' mt="30px" height='25vw' minH='400px' maxH='320px'>
+              <Text fontSize='20px' color='brand.darkBrown' fontWeight='bold'>Spending - Last 7 days</Text>
+              <Flex justifyContent='space-between' fontSize='12px' 
+                    color='brand.mediumBrown' height='150px' mt='30px'>
               {
                 chartData.map(item=>{
-                  return <Text>{item.day} {item.amount}</Text>
+                  return <Flex flexDir='column' justifyContent='flex-end'>
+                    <Box w='30px' bg={item.amount == maxValue ? "brand.cyan" : "brand.softRed"} borderRadius='5px'
+                        h={item.amount == maxValue ? '100%' : `calc(${item.amount}/${maxValue} * 100%)`}
+                        _hover={{opacity:'0.8'}}></Box>
+                    <Text textAlign='center'>{item.day}</Text>
+                  </Flex> 
                 })
               }
-              <Divider />
-              <Text fontSize='12px'>Total this month</Text>
+               
+              </Flex>
+              
+              <Divider bg="brand.cream" mt='30px' />
+              <Text fontSize='18px' mt='30px' mb='-7px' color="brand.mediumBrown">Total this month</Text>
               <Flex>
-                <Text fontSize='18px'> $478.33</Text>
+                <Text fontSize='35px' fontWeight='bold' color="brand.darkBrown"> $478.33</Text>
                 <Spacer />
-                <Box fontSize='12px'>
-                  <Text>+2.4%</Text>
-                  <Text>from last month</Text>
+                <Box fontSize='18px' >
+                  <Text fontWeight='bold' color="brand.darkBrown" fontSize='18px' textAlign='right'>+2.4%</Text>
+                  <Text color="brand.mediumBrown" fontSize='18px'>from last month</Text>
                 </Box>
               </Flex>
             </Box>
